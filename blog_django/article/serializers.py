@@ -9,3 +9,8 @@ class ArticleListSerializer(serializers.ModelSerializer):
             'title',
             'created',
         ]
+
+class ArticleDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
