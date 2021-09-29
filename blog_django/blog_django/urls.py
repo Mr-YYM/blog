@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from article import views
+from django.contrib import admin
 
 router = DefaultRouter()
 router.register(r'article', views.ArticleViewSet)
@@ -25,5 +26,7 @@ router.register(r'tag', views.TagViewSet)
 app_name = 'article'
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
     path('api/', include(router.urls)),
 ]
