@@ -4,6 +4,7 @@ from .permissons import IsAdminUserOrReadOnly
 from rest_framework import filters
 from rest_framework import viewsets
 from article.serializers import ArticleSerializer
+from article.serializers import ArticleDetailSerializer
 
 
 from article.models import Category
@@ -26,7 +27,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
-    serializer_class = ArticleSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
     filter_backends = [filters.SearchFilter]
@@ -34,3 +34,9 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+    
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ArticleSerializer
+        else:
+            return ArticleDetailSerializer

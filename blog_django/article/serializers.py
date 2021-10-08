@@ -38,7 +38,7 @@ class CategorySerializer(serializers.ModelSerializer):
         read_only_fields = ['created']
 
 
-class ArticleSerializer(serializers.HyperlinkedModelSerializer):
+class ArticleBaseSerializer(serializers.HyperlinkedModelSerializer):
     """博文序列化器"""
 
     # tag 字段
@@ -71,6 +71,30 @@ class ArticleSerializer(serializers.HyperlinkedModelSerializer):
                     Tag.objects.create(text=text)
 
         return super().to_internal_value(data)
+
+
+
+# 保留 Meta 类
+# 将父类改为 ArticleBaseSerializer
+class ArticleSerializer(ArticleBaseSerializer):
+    class Meta:
+        model = Article
+        fields = '__all__'
+        extra_kwargs = {'body': {'write_only': True}}
+
+
+class ArticleDetailSerializer(ArticleBaseSerializer):
+    # 渲染后的正文
+    body_html = serializers.SerializerMethodField()
+    # 渲染后的目录
+    toc_html = serializers.SerializerMethodField()
+
+    # 使用 SerializerMethodField，Django 会自动去调用 get_body_html() 方法
+    def get_body_html(self, obj):
+        return obj.get_md()[0]
+
+    def get_toc_html(self, obj):
+        return obj.get_md()[1]
 
     class Meta:
         model = Article
