@@ -28,7 +28,19 @@ class Category(models.Model):
         return self.title
 
 
+class Avatar(models.Model):
+    content = models.ImageField(upload_to='avatar/%Y%m%d')
+
+
 class Article(models.Model):
+    # 标题图
+    avatar = models.ForeignKey(
+        Avatar,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='article'
+    )
     # 标签
     tags = models.ManyToManyField(
         Tag,

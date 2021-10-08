@@ -13,6 +13,17 @@ from article.serializers import CategorySerializer
 from article.models import Tag
 from article.serializers import TagSerializer
 
+from article.models import Avatar
+# 这个 AvatarSerializer 最后来写
+from article.serializers import AvatarSerializer
+
+
+class AvatarViewSet(viewsets.ModelViewSet):
+    queryset = Avatar.objects.all()
+    serializer_class = AvatarSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
+
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
