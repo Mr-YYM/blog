@@ -19,6 +19,8 @@ from article import views
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from user_info.views import UserViewSet
+
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -34,6 +36,7 @@ router.register(r'category', views.CategoryViewSet)
 router.register(r'tag', views.TagViewSet)
 router.register(r'avatar', views.AvatarViewSet)
 router.register(r'comment', CommentViewSet)
+router.register(r'user', UserViewSet)
 
 app_name = 'article'
 
